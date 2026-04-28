@@ -56,7 +56,7 @@ class DistrictServiceTest {
     void getBySchoolIdOrderById() {
         long schoolId = DistrictUtils.SCHOOL_ID;
         Student student = DistrictUtils.getStudent();
-        Mockito.when(studentRepository.findAllBySchoolIdByOrderById(schoolId)).thenReturn(List.of(student));
+        Mockito.when(studentRepository.findAllBySchoolIdOrderById(schoolId)).thenReturn(List.of(student));
 
         List<Student> studentsReturned = districtService.getBySchoolIdOrderById(schoolId);
 

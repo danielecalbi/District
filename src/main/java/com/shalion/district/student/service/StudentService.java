@@ -41,7 +41,7 @@ public class StudentService extends DistrictService {
     }
 
     public List<Student> getBySchoolIdAndStudentNameOrderByStudentName(long schoolId, String name) {
-        return studentRepository.findAllBySchoolIdAndByNameContainingByOrderByName(schoolId, name);
+        return studentRepository.findAllBySchoolIdAndNameContainingOrderByName(schoolId, name);
     }
 
 }

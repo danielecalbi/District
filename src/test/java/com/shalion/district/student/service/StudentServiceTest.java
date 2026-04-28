@@ -113,7 +113,7 @@ class StudentServiceTest {
     void whenGetBySchoolIdOrderById() {
         Student student = DistrictUtils.getStudent();
         long schoolId = DistrictUtils.SCHOOL_ID;
-        Mockito.when(studentRepository.findAllBySchoolIdByOrderById(schoolId)).thenReturn(List.of(DistrictUtils.getStudent()));
+        Mockito.when(studentRepository.findAllBySchoolIdOrderById(schoolId)).thenReturn(List.of(DistrictUtils.getStudent()));
 
         List<Student> students = studentService.getBySchoolIdOrderById(schoolId);
 
@@ -126,7 +126,7 @@ class StudentServiceTest {
         Student student = DistrictUtils.getStudent();
         long schoolId = DistrictUtils.SCHOOL_ID;
         String name = DistrictUtils.STUDENT_NAME;
-        Mockito.when(studentRepository.findAllBySchoolIdAndByNameContainingByOrderByName(schoolId, name)).thenReturn(List.of(student));
+        Mockito.when(studentRepository.findAllBySchoolIdAndNameContainingOrderByName(schoolId, name)).thenReturn(List.of(student));
 
         List<Student> students = studentService.getBySchoolIdAndStudentNameOrderByStudentName(schoolId, name);
 

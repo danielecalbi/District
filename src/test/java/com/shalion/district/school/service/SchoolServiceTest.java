@@ -115,7 +115,7 @@ class SchoolServiceTest {
         SchoolDto schoolDto = new SchoolDto();
         schoolDto.setStudents(List.of(studentDto));
         Mockito.when(schoolRepository.findById(student.getSchool().getId())).thenReturn(Optional.of(student.getSchool()));
-        Mockito.when(studentRepository.findAllBySchoolIdByOrderById(student.getId())).thenReturn(List.of(student));
+        Mockito.when(studentRepository.findAllBySchoolIdOrderById(student.getId())).thenReturn(List.of(student));
         Mockito.when(schoolMapper.map(student.getSchool(), List.of(student))).thenReturn(schoolDto);
 
         SchoolDto schoolDtoResult = schoolService.getByIdWithEnlistedStudents(student.getId());

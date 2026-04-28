@@ -22,7 +22,7 @@ public class DistrictService {
     }
 
     public List<Student> getBySchoolIdOrderById(long schoolId) {
-        return studentRepository.findAllBySchoolIdByOrderById(schoolId);
+        return studentRepository.findAllBySchoolIdOrderById(schoolId);
     }
 
 }
