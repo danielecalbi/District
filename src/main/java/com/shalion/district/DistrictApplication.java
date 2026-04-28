@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DistrictApplication {
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(DistrictApplication.class, args);
     }
 
