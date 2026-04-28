@@ -1,0 +1,48 @@
+services:
+  districtDb:
+    image: postgres:15
+    container_name: district_db
+    environment:
+      POSTGRES_USER: district_admin
+      POSTGRES_PASSWORD: district_pswd
+      POSTGRES_DB: district_db
+    hostname: host.docker.internal
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - district_network
+    restart: always
+
+  pgAdmin:
+    container_name: container-pg-admin-district
+    image: dpage/pgadmin4
+    depends_on:
+      - districtDb
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: district_admin
+      PGADMIN_DEFAULT_PASSWORD: district_pswd
+    restart: unless-stopped
+
+  app:
+    build: .
+    container_name: district
+    restart: unless-stopped
+    depends_on:
+      - districtDb
+    environment:
+      DATABASE_URL: postgres://district_admin:district_pswd@host.docker.internal:5432/district_db
+    ports:
+      - "8080:8080"
+    networks:
+      - district_network
+
+networks:
+  district_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
