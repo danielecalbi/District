@@ -1,7 +1,7 @@
 package com.shalion.district.student.service;
 
 import com.shalion.district.exception.ConflictException;
-import com.shalion.district.school.service.SchoolService;
+import com.shalion.district.school.repository.SchoolRepository;
 import com.shalion.district.student.domain.Student;
 import com.shalion.district.student.repository.StudentRepository;
 import com.shalion.district.util.DistrictUtils;
@@ -21,7 +21,7 @@ import java.util.Optional;
 class StudentServiceTest {
 
     @Mock
-    private SchoolService schoolService;
+    private SchoolRepository schoolRepository;
     @Mock
     private StudentRepository studentRepository;
 
@@ -31,7 +31,7 @@ class StudentServiceTest {
     @Test
     void whenCreateAndMaximumCapacityLessThanMaxMaximumCapacitySaveStudent() {
         Student student = DistrictUtils.getStudent();
-        Mockito.when(schoolService.get(student.getId())).thenReturn(DistrictUtils.getSchool(DistrictUtils.GOOD_MAXIMUM_CAPACITY));
+        Mockito.when(schoolRepository.findById(student.getId())).thenReturn(Optional.of(DistrictUtils.getSchool(DistrictUtils.GOOD_MAXIMUM_CAPACITY)));
         Mockito.when(studentRepository.save(student)).thenReturn(student);
 
         studentService.create(student);
@@ -43,7 +43,7 @@ class StudentServiceTest {
     void whenCreateAndMaximumCapacityMoreThanMaxMaximumCapacityThrowAConflictException() {
         Student student = DistrictUtils.getStudent();
 
-        Mockito.when(schoolService.get(student.getId())).thenReturn(DistrictUtils.getSchool(DistrictUtils.BAD_MAXIMUM_CAPACITY));
+        Mockito.when(schoolRepository.findById(student.getId())).thenReturn(Optional.of(DistrictUtils.getSchool(DistrictUtils.BAD_MAXIMUM_CAPACITY)));
 
         ConflictException ce = Assertions.assertThrows(ConflictException.class, () -> studentService.create(student));
 

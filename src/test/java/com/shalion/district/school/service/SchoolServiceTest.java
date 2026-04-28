@@ -7,7 +7,7 @@ import com.shalion.district.school.mapper.SchoolMapper;
 import com.shalion.district.school.repository.SchoolRepository;
 import com.shalion.district.student.domain.Student;
 import com.shalion.district.student.dto.StudentDto;
-import com.shalion.district.student.service.StudentService;
+import com.shalion.district.student.repository.StudentRepository;
 import com.shalion.district.util.DistrictUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +30,7 @@ class SchoolServiceTest {
     @Mock
     private SchoolRepository schoolRepository;
     @Mock
-    private StudentService studentService;
+    private StudentRepository studentRepository;
 
     @InjectMocks
     private SchoolService schoolService;
@@ -56,27 +56,6 @@ class SchoolServiceTest {
         Mockito.verify(schoolRepository).findByName(school.getName());
         Mockito.verify(schoolRepository, Mockito.never()).save(school);
         Assertions.assertEquals("School '" + school.getName() + "' already exists!", ce.getMessage());
-    }
-
-    @Test
-    void whenGetIsSuccessful() {
-        long schoolId = DistrictUtils.SCHOOL_ID;
-        Mockito.when(schoolRepository.findById(schoolId)).thenReturn(Optional.of(DistrictUtils.getSchool()));
-
-        School school = schoolService.get(schoolId);
-
-        Assertions.assertEquals(schoolId, school.getId());
-    }
-
-    @Test
-    void whenGetASchoolAndDoNotFoundItAndThrowAnEntityNotFoundException() {
-        long schoolId = DistrictUtils.SCHOOL_ID;
-        Mockito.when(schoolRepository.findById(schoolId)).thenReturn(Optional.empty());
-
-        EntityNotFoundException enfe = Assertions.assertThrowsExactly(EntityNotFoundException.class, () -> schoolService.get(schoolId));
-
-        Mockito.verify(schoolRepository).findById(schoolId);
-        Assertions.assertEquals("School with id '" + schoolId + "' not found!", enfe.getMessage());
     }
 
     @Test
@@ -136,7 +115,7 @@ class SchoolServiceTest {
         SchoolDto schoolDto = new SchoolDto();
         schoolDto.setStudents(List.of(studentDto));
         Mockito.when(schoolRepository.findById(student.getSchool().getId())).thenReturn(Optional.of(student.getSchool()));
-        Mockito.when(studentService.getBySchoolIdOrderById(student.getId())).thenReturn(List.of(student));
+        Mockito.when(studentRepository.findAllBySchoolIdByOrderById(student.getId())).thenReturn(List.of(student));
         Mockito.when(schoolMapper.map(student.getSchool(), List.of(student))).thenReturn(schoolDto);
 
         SchoolDto schoolDtoResult = schoolService.getByIdWithEnlistedStudents(student.getId());
