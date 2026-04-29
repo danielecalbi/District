@@ -13,7 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - district_network
-    restart: always
+    restart: no
 
   pgAdmin:
     container_name: container-pg-admin-district
@@ -26,6 +26,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: district_admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: district_pswd
     restart: unless-stopped
+    networks:
+      - district_network
 
   app:
     build: .
