@@ -9,6 +9,7 @@ import com.shalion.district.service.DistrictService;
 import com.shalion.district.student.domain.Student;
 import com.shalion.district.student.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,8 +43,8 @@ public class SchoolService extends DistrictService {
         schoolRepository.deleteById(id);
     }
 
-    public List<School> getByName(String name) {
-        return schoolRepository.findByNameContaining(name);
+    public List<School> getByName(String name, Pageable pageable) {
+        return schoolRepository.findByNameContaining(name, pageable);
     }
 
     public SchoolDto getByIdWithEnlistedStudents(long id) {

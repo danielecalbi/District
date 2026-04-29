@@ -4,11 +4,14 @@ import com.shalion.district.school.domain.School;
 import com.shalion.district.school.dto.SchoolDto;
 import com.shalion.district.student.domain.Student;
 import com.shalion.district.student.dto.StudentDto;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public class DistrictUtils {
 
     public static final int BAD_MAXIMUM_CAPACITY = 2001;
     public static final int GOOD_MAXIMUM_CAPACITY = 100;
+    public static final Pageable PAGEABLE = PageRequest.of(0, 1);
     public static final long SCHOOL_ID = 1;
     public static final String SCHOOL_NAME = "Columbia University";
     public static final long STUDENT_ID = 1;
@@ -42,7 +45,7 @@ public class DistrictUtils {
         Student student = new Student();
         student.setId(STUDENT_ID);
         student.setName(STUDENT_NAME);
-        student.setSchool(getSchool(GOOD_MAXIMUM_CAPACITY));
+        student.setSchoolId(getSchool(GOOD_MAXIMUM_CAPACITY).getId());
         return student;
     }
 
@@ -58,7 +61,7 @@ public class DistrictUtils {
         StudentDto studentDto = new StudentDto();
         studentDto.setId(1);
         studentDto.setName(STUDENT_NAME);
-        studentDto.setSchoolDto(getSchoolDto());
+        studentDto.setSchoolId(getSchoolDto().getId());
         return studentDto;
     }
 

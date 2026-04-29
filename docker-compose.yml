@@ -23,7 +23,7 @@ services:
     ports:
       - "5050:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: district_admin
+      PGADMIN_DEFAULT_EMAIL: district_admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: district_pswd
     restart: unless-stopped
 
@@ -37,6 +37,7 @@ services:
       DATABASE_URL: postgres://district_admin:district_pswd@host.docker.internal:5432/district_db
     ports:
       - "8080:8080"
+      - "5005:5005"
     networks:
       - district_network
 

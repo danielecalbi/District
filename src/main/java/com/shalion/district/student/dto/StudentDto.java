@@ -1,6 +1,5 @@
 package com.shalion.district.student.dto;
 
-import com.shalion.district.school.dto.SchoolDto;
 import lombok.Data;
 
 import java.io.Serial;
@@ -14,5 +13,5 @@ public class StudentDto implements Serializable {
 
     private long id;
     private String name;
-    private SchoolDto schoolDto;
+    private long schoolId;
 }

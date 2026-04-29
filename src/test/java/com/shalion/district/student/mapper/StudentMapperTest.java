@@ -18,9 +18,7 @@ class StudentMapperTest {
 
         Assertions.assertEquals(student.getId(), studentDto.getId());
         Assertions.assertEquals(student.getName(), studentDto.getName());
-        Assertions.assertEquals(student.getSchool().getId(), studentDto.getSchoolDto().getId());
-        Assertions.assertEquals(student.getSchool().getName(), studentDto.getSchoolDto().getName());
-        Assertions.assertEquals(student.getSchool().getMaximumCapacity(), studentDto.getSchoolDto().getMaximumCapacity());
+        Assertions.assertEquals(student.getSchoolId(), studentDto.getSchoolId());
     }
 
     @Test
@@ -31,9 +29,7 @@ class StudentMapperTest {
 
         Assertions.assertEquals(studentDto.getId(), student.getId());
         Assertions.assertEquals(studentDto.getName(), student.getName());
-        Assertions.assertEquals(studentDto.getSchoolDto().getId(), student.getSchool().getId());
-        Assertions.assertEquals(studentDto.getSchoolDto().getName(), student.getSchool().getName());
-        Assertions.assertEquals(studentDto.getSchoolDto().getMaximumCapacity(), student.getSchool().getMaximumCapacity());
+        Assertions.assertEquals(studentDto.getSchoolId(), student.getSchoolId());
     }
 
 }

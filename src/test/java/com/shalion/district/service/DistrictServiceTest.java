@@ -61,9 +61,7 @@ class DistrictServiceTest {
         List<Student> studentsReturned = districtService.getBySchoolIdOrderById(schoolId);
 
         Assertions.assertEquals(1, studentsReturned.size());
-        Assertions.assertEquals(student.getSchool().getId(), studentsReturned.getFirst().getSchool().getId());
-        Assertions.assertEquals(student.getSchool().getName(), studentsReturned.getFirst().getSchool().getName());
-        Assertions.assertEquals(student.getSchool().getMaximumCapacity(), studentsReturned.getFirst().getSchool().getMaximumCapacity());
+        Assertions.assertEquals(schoolId, studentsReturned.getFirst().getSchoolId());
     }
 
 }

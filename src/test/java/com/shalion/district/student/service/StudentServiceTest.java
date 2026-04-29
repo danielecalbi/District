@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,7 @@ class StudentServiceTest {
         ConflictException ce = Assertions.assertThrows(ConflictException.class, () -> studentService.create(student));
 
         Mockito.verify(studentRepository, Mockito.never()).save(student);
-        Assertions.assertEquals("Maximum capacity exceeded for school with id '" + student.getSchool().getId() + "'! Student '" + student.getName() + "' has been not created!", ce.getMessage());
+        Assertions.assertEquals("Maximum capacity exceeded for school with id '" + student.getSchoolId() + "'! Student '" + student.getName() + "' has been not created!", ce.getMessage());
     }
 
     @Test
@@ -76,7 +77,7 @@ class StudentServiceTest {
     void whenUpdateIsSuccessful() {
         Student student = DistrictUtils.getStudent();
         Student studentToSave = DistrictUtils.getStudent();
-        studentToSave.setSchool(DistrictUtils.getOtherSchool());
+        studentToSave.setSchoolId(DistrictUtils.getOtherSchool().getId());
         Mockito.when(studentRepository.findById(studentToSave.getId())).thenReturn(Optional.of(student));
         Mockito.when(studentRepository.save(studentToSave)).thenReturn(studentToSave);
 
@@ -84,7 +85,7 @@ class StudentServiceTest {
 
         Mockito.verify(studentRepository).findById(student.getId());
         Mockito.verify(studentRepository).save(studentToSave);
-        Assertions.assertNotEquals(studentUpdated.getSchool().getName(), student.getSchool().getName());
+        Assertions.assertNotEquals(studentUpdated.getSchoolId(), student.getSchoolId());
     }
 
     @Test
@@ -126,9 +127,10 @@ class StudentServiceTest {
         Student student = DistrictUtils.getStudent();
         long schoolId = DistrictUtils.SCHOOL_ID;
         String name = DistrictUtils.STUDENT_NAME;
-        Mockito.when(studentRepository.findAllBySchoolIdAndNameContainingOrderByName(schoolId, name)).thenReturn(List.of(student));
+        Pageable pageable = DistrictUtils.PAGEABLE;
+        Mockito.when(studentRepository.findAllBySchoolIdAndNameContainingOrderByName(schoolId, name, pageable)).thenReturn(List.of(student));
 
-        List<Student> students = studentService.getBySchoolIdAndStudentNameOrderByStudentName(schoolId, name);
+        List<Student> students = studentService.getBySchoolIdAndStudentNameOrderByStudentName(schoolId, name, pageable);
 
         Assertions.assertEquals(1, students.size());
         Assertions.assertEquals(student, students.getFirst());

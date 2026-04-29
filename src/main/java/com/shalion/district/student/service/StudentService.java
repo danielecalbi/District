@@ -7,6 +7,7 @@ import com.shalion.district.service.DistrictService;
 import com.shalion.district.student.domain.Student;
 import com.shalion.district.student.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public class StudentService extends DistrictService {
     }
 
     public void create(Student student) {
-        if (super.getSchool(student.getSchool().getId()).getMaximumCapacity() >= School.MAX_MAXIMUM_CAPACITY) {
-            throw new ConflictException("Maximum capacity exceeded for school with id '" + student.getSchool().getId() + "'! Student '" + student.getName() + "' has been not created!");
+        if (super.getSchool(student.getSchoolId()).getMaximumCapacity() >= School.MAX_MAXIMUM_CAPACITY) {
+            throw new ConflictException("Maximum capacity exceeded for school with id '" + student.getSchoolId() + "'! Student '" + student.getName() + "' has been not created!");
         }
         studentRepository.save(student);
     }
@@ -40,8 +41,8 @@ public class StudentService extends DistrictService {
         studentRepository.deleteById(id);
     }
 
-    public List<Student> getBySchoolIdAndStudentNameOrderByStudentName(long schoolId, String name) {
-        return studentRepository.findAllBySchoolIdAndNameContainingOrderByName(schoolId, name);
+    public List<Student> getBySchoolIdAndStudentNameOrderByStudentName(long schoolId, String name, Pageable pageable) {
+        return studentRepository.findAllBySchoolIdAndNameContainingOrderByName(schoolId, name, pageable);
     }
 
 }

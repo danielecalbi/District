@@ -5,8 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,10 +22,10 @@ public class School implements Serializable {
     public static final int MAX_MAXIMUM_CAPACITY = 2000;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     @Column(unique = true, nullable = false)
     private String name;
-    @Size(min = MIN_MAXIMUM_CAPACITY, max = MAX_MAXIMUM_CAPACITY)
+    @Range(min = MIN_MAXIMUM_CAPACITY, max = MAX_MAXIMUM_CAPACITY)
     private int maximumCapacity;
 }

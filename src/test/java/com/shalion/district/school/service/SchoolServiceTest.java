@@ -18,6 +18,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -99,9 +101,10 @@ class SchoolServiceTest {
     void whenGetByNameIsSuccessful() {
         String name = DistrictUtils.STUDENT_NAME;
         School school = DistrictUtils.getSchool();
-        Mockito.when(schoolRepository.findByNameContaining(name)).thenReturn(List.of(school));
+        Pageable pageable = PageRequest.of(0, 1);
+        Mockito.when(schoolRepository.findByNameContaining(name, pageable)).thenReturn(List.of(school));
 
-        List<School> schools = schoolService.getByName(name);
+        List<School> schools = schoolService.getByName(name, pageable);
 
         Assertions.assertEquals(1, schools.size());
         Assertions.assertEquals(school, schools.getFirst());
@@ -109,14 +112,15 @@ class SchoolServiceTest {
 
     @Test
     void whenGetByIdWithEnlistedStudents() {
+        School school = DistrictUtils.getSchool();
         Student student = DistrictUtils.getStudent();
         StudentDto studentDto = new StudentDto();
         BeanUtils.copyProperties(student, studentDto);
         SchoolDto schoolDto = new SchoolDto();
         schoolDto.setStudents(List.of(studentDto));
-        Mockito.when(schoolRepository.findById(student.getSchool().getId())).thenReturn(Optional.of(student.getSchool()));
-        Mockito.when(studentRepository.findAllBySchoolIdOrderById(student.getId())).thenReturn(List.of(student));
-        Mockito.when(schoolMapper.map(student.getSchool(), List.of(student))).thenReturn(schoolDto);
+        Mockito.when(schoolRepository.findById(school.getId())).thenReturn(Optional.of(school));
+        Mockito.when(studentRepository.findAllBySchoolIdOrderById(school.getId())).thenReturn(List.of(student));
+        Mockito.when(schoolMapper.map(school, List.of(student))).thenReturn(schoolDto);
 
         SchoolDto schoolDtoResult = schoolService.getByIdWithEnlistedStudents(student.getId());
 
